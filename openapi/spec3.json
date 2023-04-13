@@ -27,9 +27,7 @@
         "responses": {
           "200": {
             "description": "The created customer.",
-            "content": {
-              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Customer" } } }
-            }
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Customer" } } }
           }
         },
         "security": [{ "project-secret": [ ] }]
@@ -97,7 +95,7 @@
             "items": { "type": "string" }
           }
         },
-        "required": ["id", "email", "name", "description", "metadata", "preferredLocales"]
+        "required": ["id"]
       },
       "Customer": {
         "type": "object",
