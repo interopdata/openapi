@@ -17,6 +17,26 @@
         security: 
           - 
             project-secret: []
+    /data-export-links: 
+      post: 
+        operationId: "createDataExportLink"
+        parameters: []
+        requestBody: 
+          required: true
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/CreateDataExportLinkDto"
+        responses: 
+          201: 
+            description: "The created data export link."
+            content: 
+              application/json: 
+                schema: 
+                  $ref: "#/components/schemas/DataExportLink"
+        security: 
+          - 
+            project-secret: []
     /customers: 
       post: 
         operationId: "createCustomer"
@@ -55,6 +75,26 @@
                   type: "array"
                   items: 
                     $ref: "#/components/schemas/Customer"
+        security: 
+          - 
+            project-secret: []
+    /oauth/token: 
+      post: 
+        operationId: "createOAuthToken"
+        parameters: []
+        requestBody: 
+          required: true
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/CreateAccessTokenDto"
+        responses: 
+          200: 
+            description: "The created access token."
+            content: 
+              application/json: 
+                schema: 
+                  $ref: "#/components/schemas/AccessToken"
         security: 
           - 
             project-secret: []
@@ -99,25 +139,52 @@
           id: 
             type: "string"
             description: "A unique identifier of the customer in your system."
+            example: "123456"
           email: 
             type: "string"
+            example: "john@doe.com"
             description: "Customer’s email address. It’s displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to 512 characters."
           name: 
             type: "string"
+            example: "John Doe"
             description: "The customer’s full name or business name."
           description: 
             type: "string"
+            example: ""
             description: "An arbitrary string that you can attach to a customer object. It is displayed alongside the customer in the dashboard."
           metadata: 
             type: "object"
             description: "Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format."
           preferredLocales: 
+            example: 
+              - "en-US"
+              - "fr-FR"
             description: "Customer’s preferred languages, ordered by preference."
             type: "array"
             items: 
               type: "string"
         required: 
           - "id"
+      CreateDataExportLinkDto: 
+        type: "object"
+        properties: 
+          customerId: 
+            type: "string"
+            description: "The id of the customer associated with the data-export link. Must be specified if `customer` is not."
+            example: "123456"
+          customer: 
+            description: "The created or update customer associated with the data-export link. Must be specified if `customerId` is not."
+            allOf: 
+              - 
+                $ref: "#/components/schemas/CreateCustomerDto"
+      DataExportLink: 
+        type: "object"
+        properties: 
+          url: 
+            type: "string"
+            description: "The URL of the data-export link. The root part is assocaited project `Redirect URL`. You should point your user to this URL."
+        required: 
+          - "url"
       Customer: 
         type: "object"
         properties: 
@@ -145,4 +212,34 @@
           - "description"
           - "metadata"
           - "preferredLocales"
+      CreateAccessTokenDto: 
+        type: "object"
+        properties: 
+          grant_type: 
+            type: "string"
+            description: "The OAuth grant type. Must be \"authorization_code\"."
+            example: "authorization_code"
+          code: 
+            type: "string"
+            description: "The OAuth exchange code."
+        required: 
+          - "grant_type"
+          - "code"
+      AccessToken: 
+        type: "object"
+        properties: 
+          customerId: 
+            type: "string"
+            description: ""
+          accessToken: 
+            type: "string"
+            description: ""
+          expiredAt: 
+            type: "string"
+            description: "A string representing the token expiration date in the ISO 8601 format according to universal time."
+            example: "2023-04-13T17:43:08.159Z"
+        required: 
+          - "customerId"
+          - "accessToken"
+          - "expiredAt"
 
