@@ -1,0 +1,155 @@
+---
+  openapi: "3.0.0"
+  paths: 
+    /datasets: 
+      get: 
+        operationId: "datasetsList"
+        parameters: []
+        responses: 
+          200: 
+            description: "The list of dataset of the project."
+            content: 
+              application/json: 
+                schema: 
+                  type: "array"
+                  items: 
+                    $ref: "#/components/schemas/Dataset"
+        security: 
+          - 
+            project-secret: []
+    /customers: 
+      post: 
+        operationId: "createCustomer"
+        parameters: []
+        requestBody: 
+          required: true
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/CreateCustomerDto"
+        responses: 
+          200: 
+            description: "The created customer."
+            content: 
+              application/json: 
+                schema: 
+                  type: "array"
+                  items: 
+                    $ref: "#/components/schemas/Customer"
+        security: 
+          - 
+            project-secret: []
+      get: 
+        operationId: "customersList"
+        parameters: []
+        requestBody: 
+          required: true
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/CreateCustomerDto"
+        responses: 
+          200: 
+            description: "The list of customers of the project."
+            content: 
+              application/json: 
+                schema: 
+                  type: "array"
+                  items: 
+                    $ref: "#/components/schemas/Customer"
+        security: 
+          - 
+            project-secret: []
+  info: 
+    title: "Interopdata API"
+    description: "The Interopdata public API"
+    version: "0.0.1"
+    contact: {}
+  tags: 
+    - 
+      name: "interopdata"
+      description: ""
+  servers: 
+    - 
+      url: "https://api.interopdata.com"
+  components: 
+    securitySchemes: 
+      project-secret: 
+        scheme: "bearer"
+        bearerFormat: "JWT"
+        type: "http"
+    schemas: 
+      Dataset: 
+        type: "object"
+        properties: 
+          id: 
+            type: "string"
+          slug: 
+            type: "string"
+          name: 
+            type: "string"
+          description: 
+            type: "string"
+        required: 
+          - "id"
+          - "slug"
+          - "name"
+          - "description"
+      CreateCustomerDto: 
+        type: "object"
+        properties: 
+          id: 
+            type: "string"
+            description: "A unique identifier of the customer in your system."
+          email: 
+            type: "string"
+            description: "Customer’s email address. It’s displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to 512 characters."
+          name: 
+            type: "string"
+            description: "The customer’s full name or business name."
+          description: 
+            type: "string"
+            description: "An arbitrary string that you can attach to a customer object. It is displayed alongside the customer in the dashboard."
+          metadata: 
+            type: "object"
+            description: "Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format."
+          preferredLocales: 
+            description: "Customer’s preferred languages, ordered by preference."
+            type: "array"
+            items: 
+              type: "string"
+        required: 
+          - "id"
+          - "email"
+          - "name"
+          - "description"
+          - "metadata"
+          - "preferredLocales"
+      Customer: 
+        type: "object"
+        properties: 
+          id: 
+            type: "string"
+            description: "A unique identifier of the customer in your system."
+          email: 
+            type: "object"
+            description: "Customer’s email address. It’s displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to 512 characters."
+            nullable: true
+          description: 
+            type: "object"
+            nullable: true
+          metadata: 
+            type: "object"
+            description: "Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format."
+          preferredLocales: 
+            description: "Customer’s preferred languages, ordered by preference."
+            type: "array"
+            items: 
+              type: "string"
+        required: 
+          - "id"
+          - "email"
+          - "description"
+          - "metadata"
+          - "preferredLocales"
+
