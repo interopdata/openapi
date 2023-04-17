@@ -17,26 +17,6 @@
         security: 
           - 
             project-secret: []
-    /data-export-links: 
-      post: 
-        operationId: "createDataExportLink"
-        parameters: []
-        requestBody: 
-          required: true
-          content: 
-            application/json: 
-              schema: 
-                $ref: "#/components/schemas/CreateDataExportLinkDto"
-        responses: 
-          201: 
-            description: "The created data export link."
-            content: 
-              application/json: 
-                schema: 
-                  $ref: "#/components/schemas/DataExportLink"
-        security: 
-          - 
-            project-secret: []
     /customers: 
       post: 
         operationId: "createCustomer"
@@ -78,6 +58,22 @@
         security: 
           - 
             project-secret: []
+    /data-exports: 
+      post: 
+        operationId: "createDataExport"
+        parameters: []
+        requestBody: 
+          required: true
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/CreateDataExportDto"
+        responses: 
+          201: 
+            description: ""
+        security: 
+          - 
+            user-token: []
     /oauth/token: 
       post: 
         operationId: "createOAuthToken"
@@ -95,6 +91,26 @@
               application/json: 
                 schema: 
                   $ref: "#/components/schemas/AccessToken"
+        security: 
+          - 
+            project-secret: []
+    /data-export-links: 
+      post: 
+        operationId: "createDataExportLink"
+        parameters: []
+        requestBody: 
+          required: true
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/CreateDataExportLinkDto"
+        responses: 
+          201: 
+            description: "The created data export link."
+            content: 
+              application/json: 
+                schema: 
+                  $ref: "#/components/schemas/DataExportLink"
         security: 
           - 
             project-secret: []
@@ -128,11 +144,17 @@
             type: "string"
           description: 
             type: "string"
+          icon: 
+            type: "string"
+          contentType: 
+            type: "string"
         required: 
           - "id"
           - "slug"
           - "name"
           - "description"
+          - "icon"
+          - "contentType"
       CreateCustomerDto: 
         type: "object"
         properties: 
@@ -165,26 +187,6 @@
               type: "string"
         required: 
           - "id"
-      CreateDataExportLinkDto: 
-        type: "object"
-        properties: 
-          customerId: 
-            type: "string"
-            description: "The id of the customer associated with the data-export link. Must be specified if `customer` is not."
-            example: "123456"
-          customer: 
-            description: "The created or update customer associated with the data-export link. Must be specified if `customerId` is not."
-            allOf: 
-              - 
-                $ref: "#/components/schemas/CreateCustomerDto"
-      DataExportLink: 
-        type: "object"
-        properties: 
-          url: 
-            type: "string"
-            description: "The URL of the data-export link. The root part is assocaited project `Redirect URL`. You should point your user to this URL."
-        required: 
-          - "url"
       Customer: 
         type: "object"
         properties: 
@@ -212,6 +214,19 @@
           - "description"
           - "metadata"
           - "preferredLocales"
+      CreateDataExportDto: 
+        type: "object"
+        properties: 
+          datasets: 
+            description: "The list of slug of the datasets to export"
+            example: 
+              - "dataset-1"
+              - "dataset-2"
+            type: "array"
+            items: 
+              type: "string"
+        required: 
+          - "datasets"
       CreateAccessTokenDto: 
         type: "object"
         properties: 
@@ -242,4 +257,24 @@
           - "customerId"
           - "accessToken"
           - "expiredAt"
+      CreateDataExportLinkDto: 
+        type: "object"
+        properties: 
+          customerId: 
+            type: "string"
+            description: "The id of the customer associated with the data-export link. Must be specified if `customer` is not."
+            example: "123456"
+          customer: 
+            description: "The created or update customer associated with the data-export link. Must be specified if `customerId` is not."
+            allOf: 
+              - 
+                $ref: "#/components/schemas/CreateCustomerDto"
+      DataExportLink: 
+        type: "object"
+        properties: 
+          url: 
+            type: "string"
+            description: "The URL of the data-export link. The root part is assocaited project `Redirect URL`. You should point your user to this URL."
+        required: 
+          - "url"
 
