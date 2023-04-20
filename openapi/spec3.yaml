@@ -128,10 +128,16 @@
       url: "https://api.interopdata.com"
   components: 
     securitySchemes: 
+      user-token: 
+        scheme: "bearer"
+        bearerFormat: "auth-scheme"
+        type: "http"
+        description: "Bearer HTTP authentication. Authorization: Bearer <access_token>"
       project-secret: 
         scheme: "bearer"
-        bearerFormat: "JWT"
+        bearerFormat: "auth-scheme"
         type: "http"
+        description: "Bearer HTTP authentication. Authorization: Bearer <api_key>"
     schemas: 
       Dataset: 
         type: "object"
