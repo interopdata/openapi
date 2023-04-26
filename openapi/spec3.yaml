@@ -169,6 +169,26 @@
         security: 
           - 
             user-token: []
+    /data-export-datasets/{id}/download: 
+      post: 
+        operationId: "createDataExportDatasetDownload"
+        parameters: 
+          - 
+            name: "id"
+            required: true
+            in: "path"
+            schema: 
+              type: "string"
+        responses: 
+          200: 
+            description: "Get a download link for the given data-export-dataset."
+            content: 
+              application/json: 
+                schema: 
+                  $ref: "#/components/schemas/DataExportDatasetDownload"
+        security: 
+          - 
+            user-token: []
   info: 
     title: "Interopdata API"
     description: "The Interopdata public API"
@@ -374,4 +394,20 @@
             description: "The URL of the data-export link. The root part is assocaited project `Redirect URL`. You should point your user to this URL."
         required: 
           - "url"
+      DataExportDatasetDownload: 
+        type: "object"
+        properties: 
+          size: 
+            type: "number"
+          filename: 
+            type: "string"
+          url: 
+            type: "string"
+          contentType: 
+            type: "string"
+        required: 
+          - "size"
+          - "filename"
+          - "url"
+          - "contentType"
 
