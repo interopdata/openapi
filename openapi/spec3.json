@@ -16,6 +16,61 @@
         "security": [{ "project-secret": [ ] }]
       }
     },
+    "/data-exports": {
+      "post": {
+        "operationId": "createDataExport",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateDataExportDto" } } }
+        },
+        "responses": { "201": { "description": "" } },
+        "security": [{ "user-token": [ ] }]
+      },
+      "get": {
+        "operationId": "dataExportsList",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "The list of data-exports for the authenticated user.",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/DataExport" } } }
+            }
+          }
+        },
+        "security": [{ "user-token": [ ] }]
+      }
+    },
+    "/data-exports/{id}": {
+      "get": {
+        "operationId": "dataExportRetrieve",
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Retreive a data-export with the specified `id` for the authenticated user.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataExport" } } }
+          }
+        },
+        "security": [{ "user-token": [ ] }]
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "operationId": "createOAuthToken",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateAccessTokenDto" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "The created access token.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AccessToken" } } }
+          }
+        },
+        "security": [{ "project-secret": [ ] }]
+      }
+    },
     "/customers": {
       "post": {
         "operationId": "createCustomer",
@@ -50,35 +105,6 @@
         "security": [{ "project-secret": [ ] }]
       }
     },
-    "/data-exports": {
-      "post": {
-        "operationId": "createDataExport",
-        "parameters": [ ],
-        "requestBody": {
-          "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateDataExportDto" } } }
-        },
-        "responses": { "201": { "description": "" } },
-        "security": [{ "user-token": [ ] }]
-      }
-    },
-    "/oauth/token": {
-      "post": {
-        "operationId": "createOAuthToken",
-        "parameters": [ ],
-        "requestBody": {
-          "required": true,
-          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateAccessTokenDto" } } }
-        },
-        "responses": {
-          "200": {
-            "description": "The created access token.",
-            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AccessToken" } } }
-          }
-        },
-        "security": [{ "project-secret": [ ] }]
-      }
-    },
     "/data-export-links": {
       "post": {
         "operationId": "createDataExportLink",
@@ -94,6 +120,19 @@
           }
         },
         "security": [{ "project-secret": [ ] }]
+      }
+    },
+    "/data-export-datasets/{id}": {
+      "get": {
+        "operationId": "dataExportDatasetRetrieve",
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Retreive a data-export-dataset with the specified `id` for the authenticated user.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataExportDataset" } } }
+          }
+        },
+        "security": [{ "user-token": [ ] }]
       }
     }
   },
@@ -132,6 +171,64 @@
           "contentType": { "type": "string" }
         },
         "required": ["id", "slug", "name", "description", "icon", "contentType"]
+      },
+      "CreateDataExportDto": {
+        "type": "object",
+        "properties": {
+          "datasets": {
+            "description": "The list of slug of the datasets to export",
+            "example": ["dataset-1", "dataset-2"],
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["datasets"]
+      },
+      "DataExportDataset": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "icon": { "type": "string" },
+          "status": { "type": "string" },
+          "size": { "type": "string" }
+        },
+        "required": ["id", "name", "description", "icon", "status"]
+      },
+      "DataExport": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "createdAt": { "type": "string" },
+          "datasets": { "type": "array", "items": { "$ref": "#/components/schemas/DataExportDataset" } }
+        },
+        "required": ["id", "createdAt", "datasets"]
+      },
+      "CreateAccessTokenDto": {
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "description": "The OAuth grant type. Must be \"authorization_code\".",
+            "example": "authorization_code"
+          },
+          "code": { "type": "string", "description": "The OAuth exchange code." }
+        },
+        "required": ["grant_type", "code"]
+      },
+      "AccessToken": {
+        "type": "object",
+        "properties": {
+          "customerId": { "type": "string", "description": "" },
+          "accessToken": { "type": "string", "description": "" },
+          "expiredAt": {
+            "type": "string",
+            "description": "A string representing the token expiration date in the ISO 8601 format according to universal time.",
+            "example": "2023-04-13T17:43:08.159Z"
+          }
+        },
+        "required": ["customerId", "accessToken", "expiredAt"]
       },
       "CreateCustomerDto": {
         "type": "object",
@@ -190,43 +287,6 @@
           }
         },
         "required": ["id", "email", "description", "metadata", "preferredLocales"]
-      },
-      "CreateDataExportDto": {
-        "type": "object",
-        "properties": {
-          "datasets": {
-            "description": "The list of slug of the datasets to export",
-            "example": ["dataset-1", "dataset-2"],
-            "type": "array",
-            "items": { "type": "string" }
-          }
-        },
-        "required": ["datasets"]
-      },
-      "CreateAccessTokenDto": {
-        "type": "object",
-        "properties": {
-          "grant_type": {
-            "type": "string",
-            "description": "The OAuth grant type. Must be \"authorization_code\".",
-            "example": "authorization_code"
-          },
-          "code": { "type": "string", "description": "The OAuth exchange code." }
-        },
-        "required": ["grant_type", "code"]
-      },
-      "AccessToken": {
-        "type": "object",
-        "properties": {
-          "customerId": { "type": "string", "description": "" },
-          "accessToken": { "type": "string", "description": "" },
-          "expiredAt": {
-            "type": "string",
-            "description": "A string representing the token expiration date in the ISO 8601 format according to universal time.",
-            "example": "2023-04-13T17:43:08.159Z"
-          }
-        },
-        "required": ["customerId", "accessToken", "expiredAt"]
       },
       "CreateDataExportLinkDto": {
         "type": "object",
