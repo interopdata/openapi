@@ -295,6 +295,9 @@
           code: 
             type: "string"
             description: "The OAuth exchange code."
+          ip: 
+            type: "string"
+            description: "The source IP address of the exchange request."
         required: 
           - "grant_type"
           - "code"
