@@ -101,6 +101,19 @@
         "security": [{ "project-secret": [ ] }]
       }
     },
+    "/customer": {
+      "get": {
+        "operationId": "customerRetrieve",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "Return the authenticated customer.",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Customer" } } }
+          }
+        },
+        "security": [{ "user-token": [ ] }]
+      }
+    },
     "/customers": {
       "post": {
         "operationId": "createCustomer",
@@ -311,6 +324,28 @@
         },
         "required": ["id", "displayName", "locale", "default"]
       },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "A unique identifier of the customer in your system." },
+          "email": {
+            "type": "object",
+            "description": "Customer’s email address. It’s displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to 512 characters.",
+            "nullable": true
+          },
+          "description": { "type": "object", "nullable": true },
+          "metadata": {
+            "type": "object",
+            "description": "Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format."
+          },
+          "preferredLocales": {
+            "description": "Customer’s preferred languages, ordered by preference.",
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["id", "email", "description", "metadata", "preferredLocales"]
+      },
       "CreateCustomerDto": {
         "type": "object",
         "properties": {
@@ -346,28 +381,6 @@
           }
         },
         "required": ["id"]
-      },
-      "Customer": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "description": "A unique identifier of the customer in your system." },
-          "email": {
-            "type": "object",
-            "description": "Customer’s email address. It’s displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to 512 characters.",
-            "nullable": true
-          },
-          "description": { "type": "object", "nullable": true },
-          "metadata": {
-            "type": "object",
-            "description": "Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format."
-          },
-          "preferredLocales": {
-            "description": "Customer’s preferred languages, ordered by preference.",
-            "type": "array",
-            "items": { "type": "string" }
-          }
-        },
-        "required": ["id", "email", "description", "metadata", "preferredLocales"]
       },
       "CreateDataExportLinkDto": {
         "type": "object",
