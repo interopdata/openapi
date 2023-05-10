@@ -176,12 +176,21 @@
       "Dataset": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "slug": { "type": "string" },
-          "name": { "type": "string" },
-          "description": { "type": "string" },
-          "icon": { "type": "string" },
-          "contentType": { "type": "string" }
+          "id": { "type": "string", "example": "46abca6b-b9f3-4817-b78a-a776d5b1c15c" },
+          "slug": { "type": "string", "example": "my-dataset" },
+          "name": { "type": "object", "example": { "en": "Dataset name", "fr": "Nom du jeu de données" } },
+          "description": {
+            "type": "object",
+            "example": { "en": "Dataset description", "fr": "Description du jeu de données" }
+          },
+          "icon": {
+            "type": "object",
+            "example": {
+              "en": "https://s3.interopdata.com/interopdata/icons/62351db8-e549-403f-8822-32cca7afab22/small.png",
+              "fr": "https://s3.interopdata.com/interopdata/icons/f9a2182f-dabb-4429-9300-b7a62f2af378/small.png"
+            }
+          },
+          "contentType": { "type": "string", "example": "text/csv" }
         },
         "required": ["id", "slug", "name", "description", "icon", "contentType"]
       },
