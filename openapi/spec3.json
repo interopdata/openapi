@@ -210,9 +210,18 @@
         "type": "object",
         "properties": {
           "id": { "type": "string" },
-          "name": { "type": "string" },
-          "description": { "type": "string" },
-          "icon": { "type": "string" },
+          "name": { "type": "object", "example": { "en": "Dataset name", "fr": "Nom du jeu de données" } },
+          "description": {
+            "type": "object",
+            "example": { "en": "Dataset description", "fr": "Description du jeu de données" }
+          },
+          "icon": {
+            "type": "object",
+            "example": {
+              "en": "https://s3.interopdata.com/interopdata/icons/62351db8-e549-403f-8822-32cca7afab22/small.png",
+              "fr": "https://s3.interopdata.com/interopdata/icons/f9a2182f-dabb-4429-9300-b7a62f2af378/small.png"
+            }
+          },
           "status": { "type": "string" },
           "size": { "type": "string" }
         },
