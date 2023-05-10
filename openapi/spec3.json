@@ -71,6 +71,36 @@
         "security": [{ "project-secret": [ ] }]
       }
     },
+    "/project": {
+      "get": {
+        "operationId": "projectRetreive",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "The list of dataset of the project.",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Project" } } }
+            }
+          }
+        },
+        "security": [{ "project-secret": [ ] }]
+      }
+    },
+    "/locales": {
+      "get": {
+        "operationId": "localesList",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "The list of dataset of the project.",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Locale" } } }
+            }
+          }
+        },
+        "security": [{ "project-secret": [ ] }]
+      }
+    },
     "/customers": {
       "post": {
         "operationId": "createCustomer",
@@ -261,6 +291,25 @@
           }
         },
         "required": ["customerId", "accessToken", "expiredAt"]
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "46abca6b-b9f3-4817-b78a-a776d5b1c15c" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" }
+        },
+        "required": ["id", "name", "slug"]
+      },
+      "Locale": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "46abca6b-b9f3-4817-b78a-a776d5b1c15c" },
+          "displayName": { "type": "string" },
+          "locale": { "type": "string" },
+          "default": { "type": "boolean" }
+        },
+        "required": ["id", "displayName", "locale", "default"]
       },
       "CreateCustomerDto": {
         "type": "object",
