@@ -11,6 +11,7 @@ paths:
   /data-export-links: {post: {operationId: createDataExportLink, parameters: [], requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/CreateDataExportLinkDto'}}}}, responses: {'201': {description: 'The created data export link.', content: {application/json: {schema: {$ref: '#/components/schemas/DataExportLink'}}}}}, security: [{project-secret: []}]}}
   '/data-export-datasets/{id}': {get: {operationId: dataExportDatasetRetrieve, parameters: [{name: id, required: true, in: path, schema: {type: string}}], responses: {'200': {description: 'Retreive a data-export-dataset with the specified `id` for the authenticated user.', content: {application/json: {schema: {$ref: '#/components/schemas/DataExportDataset'}}}}}, security: [{user-token: []}]}}
   '/data-export-datasets/{id}/download': {post: {operationId: createDataExportDatasetDownload, parameters: [{name: id, required: true, in: path, schema: {type: string}}], responses: {'200': {description: 'Get a download link for the given data-export-dataset.', content: {application/json: {schema: {$ref: '#/components/schemas/DataExportDatasetDownload'}}}}}, security: [{user-token: []}]}}
+  '/data-export-datasets/{id}/seal': {post: {operationId: sealDataExportDataset, parameters: [{name: id, required: true, in: path, schema: {type: string}}], responses: {'201': {description: 'Seal the data-export dataset.'}}, security: [{project-secret: []}]}}
 info:
   title: 'Interopdata API'
   description: 'The Interopdata public API'

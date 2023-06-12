@@ -190,6 +190,14 @@
         },
         "security": [{ "user-token": [ ] }]
       }
+    },
+    "/data-export-datasets/{id}/seal": {
+      "post": {
+        "operationId": "sealDataExportDataset",
+        "parameters": [{ "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }],
+        "responses": { "201": { "description": "Seal the data-export dataset." } },
+        "security": [{ "project-secret": [ ] }]
+      }
     }
   },
   "info": {
