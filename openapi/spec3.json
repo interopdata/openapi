@@ -240,10 +240,9 @@
               "en": "https://s3.interopdata.com/interopdata/icons/62351db8-e549-403f-8822-32cca7afab22/small.png",
               "fr": "https://s3.interopdata.com/interopdata/icons/f9a2182f-dabb-4429-9300-b7a62f2af378/small.png"
             }
-          },
-          "contentType": { "type": "string", "example": "text/csv" }
+          }
         },
-        "required": ["id", "slug", "name", "description", "icon", "contentType"]
+        "required": ["id", "slug", "name", "description", "icon"]
       },
       "CreateDataExportDto": {
         "type": "object",
